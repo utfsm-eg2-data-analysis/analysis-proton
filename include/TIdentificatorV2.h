@@ -973,10 +973,10 @@ public:
     if (Charge(k) == 1 &&
 	Status(k) > 0 &&
 	StatDC(k) > 0 && DCStatus(k) > 0 &&
-	Momentum(k) < 2. && NRowsDC() != 0 && StatSC(k) > 0 &&
-	((Momentum(k) >= 1. && TimeCorr4(k, 0.938) >= -0.69 && TimeCorr4(k, 0.938) <= 1.38) ||
-	 (Momentum(k) < 1. && TimeCorr4(k, 0.938) >= -3.78 && TimeCorr4(k, 0.938) <= 6.75))) {
-      return true;
+	Momentum(k) > 0.5 //Gev
+	&& TMath::Abs((Betta(k) - (Momentum(k)/TMath::Sqrt(Momentum(k)*Momentum(k) + 0.93827*0.93827)))-(-0.00218))<3*0.01002)
+    {	
+       return true;
     } // closure
     return false;
   }
