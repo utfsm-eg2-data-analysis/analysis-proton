@@ -1,0 +1,91 @@
+#!/bin/bash
+
+#################################################################################
+# ./run_mergeV3.sh <target> <first nset> <final nset> <first run> <last run>    #
+#     <target> = (D, C, Fe, Pb)                                                 #
+#     <nset>   = (1 - 10)                                                       #
+#                                                                               #
+# EG: ./run_mergeV3.sh D 3 5 1 1000                                             #
+#################################################################################
+
+#####
+# Function
+###select 
+
+function get_num_2dig()
+{
+  sr2=$1
+  srn2=""
+  if [[ $sr2 -lt 10 ]]; then
+    srn2="0$sr2"
+  else
+    srn2="$sr2"
+  fi
+  echo $srn2
+}
+
+function get_num_4dig()
+{
+  sr=$1
+  srn=""
+  if [[ $sr -lt 10 ]]; then
+    srn="000$sr"
+  elif [[ $sr -lt 100 ]]; then
+    srn="00$sr"
+  elif [[ $sr -lt 1000 ]]; then
+    srn="0$sr"
+  else
+    srn="$sr"
+  fi
+  echo $srn
+}
+
+#####
+# Input
+###
+
+INPUTARRAY=("$@")
+
+TARNAME=${INPUTARRAY[0]}
+FNSET=${INPUTARRAY[1]}
+LNSET=${INPUTARRAY[2]}
+FIRSTRUN=${INPUTARRAY[3]}
+LASTRUN=${INPUTARRAY[4]}
+
+####
+# Main
+###
+
+# set env
+source ~/.bashrc
+
+for ((NST=${FNSET}; NST <= ${LNSET}; NST++)); do
+    # set main dirs
+    NSET=$(get_num_2dig $NST)
+    FIRSTDIR=/lustre19/expphy/volatile/clas/claseg2/jpgarces/particleSim/farm/${TARNAME}/
+    SIMDIR=/lustre19/expphy/volatile/clas/claseg2/jpgarces/particleSim/farm/${TARNAME}/${NSET}      # dir where are located all the JPSims
+   
+    mkdir -p ${FIRSTDIR}/${NSET}-merged
+    
+    COUNTER=0
+
+    for ((RN=${FIRSTRUN}; RN <= $((${LASTRUN}/100)); RN++)); do
+	STA=$((1+${COUNTER}))
+	FIN=$((100+${COUNTER}))
+	OUTDIR=/lustre19/expphy/volatile/clas/claseg2/jpgarces/particleSim/farm/${TARNAME}/${NSET}/${STA}-${FIN}               # output dir
+	mkdir -p ${OUTDIR} # just in case
+	for ((RN2=${STA}; RN2 <= ${FIN}; RN2++)); do # ${NFILES} or 1 for test
+	    SRN=$(get_num_4dig $RN2)                                                              # run number to string
+	    INDIR=${SIMDIR}/run${SRN}                                                            # define input directory
+	    mv -v ${INDIR}/recsis${TARNAME}.root ${OUTDIR}/recsis${TARNAME}_${SRN}.root           # change name of file to GST format
+	    let COUNTER++
+	done
+
+	cd ${OUTDIR}
+
+	hadd recsis${TARNAME}_${NSET}_${STA}-${FIN}.root *.root #merge run files
+
+	mv -v ${OUTDIR}/recsis${TARNAME}_${NSET}_${STA}-${FIN}.root ${FIRSTDIR}/${NSET}-merged/recsis${TARNAME}_${NSET}_${STA}-${FIN}.root
+    done
+
+done
