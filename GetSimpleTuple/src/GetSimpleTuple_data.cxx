@@ -78,8 +78,7 @@ int main(int argc, char **argv) {
         // loop in detected particles
         for (Int_t p = 1; p < input->GetNRows("EVNT"); p++) {
           // rest of particles
-          if (t->GetCategorization(p, dataKind, targetOption) == "gamma" || t->GetCategorization(p, dataKind, targetOption) == "pi+" ||
-              t->GetCategorization(p, dataKind, targetOption) == "pi-") {
+          if (t->GetCategorization(p, dataKind, targetOption) == "proton") {
             AssignParticleVar_Data(t, dp, p, i, dataKind, targetOption);  // (TIdentificator, data_p, row, evnt, dataKind, targetOption)
             tParticles->Fill();
           }

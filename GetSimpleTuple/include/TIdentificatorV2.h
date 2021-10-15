@@ -491,7 +491,8 @@ class TIdentificatorV2 {
   Double_t ThetaVirtLab(Bool_t kind = 0) {
     // Returns the polar angle of the virtual photon in Lab frame
     // The virtual photon information depends on the electron info
-    return TMath::ACos((kEbeam - Momentum(0, kind) * TMath::Cos(ThetaLab(0, kind) * TMath::Pi() / 180.)) / (TMath::Sqrt(Q2(kind) + Nu(kind) * Nu(kind))));
+    return TMath::ACos((kEbeam - Momentum(0, kind) * TMath::Cos(ThetaLab(0, kind) * TMath::Pi() / 180.)) /
+                       (TMath::Sqrt(Q2(kind) + Nu(kind) * Nu(kind))));
   }
 
   Double_t PhiVirtLab(Bool_t kind = 0) {
@@ -531,7 +532,8 @@ class TIdentificatorV2 {
 
   Double_t CosThetaPQ(Int_t k, Bool_t kind = 0) {
     // Returns the cosine of ThetaPQ for the particle
-    return (Pz(k, kind) * (kEbeam - Pz(0, kind)) - Px(k, kind) * Px(0, kind) - Py(k, kind) * Py(0, kind)) / (TMath::Sqrt(Nu(kind) * Nu(kind) + Q2(kind)) * Momentum(k, kind));
+    return (Pz(k, kind) * (kEbeam - Pz(0, kind)) - Px(k, kind) * Px(0, kind) - Py(k, kind) * Py(0, kind)) /
+           (TMath::Sqrt(Nu(kind) * Nu(kind) + Q2(kind)) * Momentum(k, kind));
   }
 
   Int_t Sector(Int_t k, Bool_t kind = 0) {
@@ -546,7 +548,8 @@ class TIdentificatorV2 {
 
   Double_t Q2(Bool_t kind = 0) {
     // Returns the four-momentum transfer of the electron-nucleon interaction
-    return 4. * kEbeam * Momentum(0, kind) * TMath::Sin(ThetaLab(0, kind) * TMath::DegToRad() / 2) * TMath::Sin(ThetaLab(0, kind) * TMath::DegToRad() / 2);
+    return 4. * kEbeam * Momentum(0, kind) * TMath::Sin(ThetaLab(0, kind) * TMath::DegToRad() / 2) *
+           TMath::Sin(ThetaLab(0, kind) * TMath::DegToRad() / 2);
   }
 
   Double_t W(Bool_t kind = 0) {
@@ -643,9 +646,12 @@ class TIdentificatorV2 {
           (sector == 2) * (-32.00 < Z(0, kind) && Z(0, kind) < -27.25) + (sector == 3) * (-32.00 < Z(0, kind) && Z(0, kind) < -27.75) +
           (sector == 4) * (-32.50 < Z(0, kind) && Z(0, kind) < -28.35) + (sector == 5) * (-33.50 < Z(0, kind) && Z(0, kind) < -28.75)) {
         return 1;  // liquid
-      } else if ((sector == 0) * (-26.50 < Z(0, kind) && Z(0, kind) < -20.00) + (sector == 1) * (-26.00 < Z(0, kind) && Z(0, kind) < -20.00) +
-                 (sector == 2) * (-25.65 < Z(0, kind) && Z(0, kind) < -20.00) + (sector == 3) * (-25.85 < Z(0, kind) && Z(0, kind) < -20.00) +
-                 (sector == 4) * (-26.65 < Z(0, kind) && Z(0, kind) < -20.00) + (sector == 5) * (-27.15 < Z(0, kind) && Z(0, kind) < -20.00)) {
+      } else if ((sector == 0) * (-26.50 < Z(0, kind) && Z(0, kind) < -20.00) +
+                 (sector == 1) * (-26.00 < Z(0, kind) && Z(0, kind) < -20.00) +
+                 (sector == 2) * (-25.65 < Z(0, kind) && Z(0, kind) < -20.00) +
+                 (sector == 3) * (-25.85 < Z(0, kind) && Z(0, kind) < -20.00) +
+                 (sector == 4) * (-26.65 < Z(0, kind) && Z(0, kind) < -20.00) +
+                 (sector == 5) * (-27.15 < Z(0, kind) && Z(0, kind) < -20.00)) {
         return 2;  // solid
       }
     }          // closure
@@ -671,12 +677,14 @@ class TIdentificatorV2 {
 
   Double_t Mx2(Int_t k, Bool_t kind = 0, Double_t mass = 0.13957) {
     // Returns missing mass of the particle
-    return W(kind) * W(kind) - 2. * Nu(kind) * Zh(k, kind, mass) * (Nu(kind) + kMprt) + mass * mass + 2. * TMath::Sqrt((Q2(kind) + Nu(kind) * Nu(kind)) * Pl2(k, kind));
+    return W(kind) * W(kind) - 2. * Nu(kind) * Zh(k, kind, mass) * (Nu(kind) + kMprt) + mass * mass +
+           2. * TMath::Sqrt((Q2(kind) + Nu(kind) * Nu(kind)) * Pl2(k, kind));
   }
 
   Double_t T(Int_t k, Bool_t kind = 0, Double_t mass = 0.13957) {
     // (?)
-    return 2. * TMath::Sqrt((Nu(kind) * Nu(kind) + Q2(kind)) * Pl2(k, kind)) + mass * mass - Q2(kind) - 2. * Nu(kind) * Nu(kind) * Zh(k, kind, mass);
+    return 2. * TMath::Sqrt((Nu(kind) * Nu(kind) + Q2(kind)) * Pl2(k, kind)) + mass * mass - Q2(kind) -
+           2. * Nu(kind) * Nu(kind) * Zh(k, kind, mass);
   }
 
   /*** Corrections ***/
@@ -799,8 +807,8 @@ class TIdentificatorV2 {
   Double_t FidThetaMin(Int_t k) {
     // minimum DC theta angle
     Int_t sector = Sector(k);
-    Double_t theta_min_val = kThetaPar0[sector] + kThetaPar1[sector] / TMath::Power(Momentum(k), 2) + kThetaPar2[sector] * Momentum(k) + kThetaPar3[sector] / Momentum(k) +
-                             kThetaPar4[sector] * TMath::Exp(kThetaPar5[sector] * Momentum(k));
+    Double_t theta_min_val = kThetaPar0[sector] + kThetaPar1[sector] / TMath::Power(Momentum(k), 2) + kThetaPar2[sector] * Momentum(k) +
+                             kThetaPar3[sector] / Momentum(k) + kThetaPar4[sector] * TMath::Exp(kThetaPar5[sector] * Momentum(k));
     return theta_min_val;
   }
 
@@ -812,9 +820,11 @@ class TIdentificatorV2 {
     } else if (side == 1 && param == 0) {
       return kFidPar0High0[sector] + kFidPar0High1[sector] * TMath::Exp(kFidPar0High2[sector] * (Momentum(k) - kFidPar0High3[sector]));
     } else if (side == 0 && param == 1) {
-      return kFidPar1Low0[sector] + kFidPar1Low1[sector] * Momentum(k) * TMath::Exp(kFidPar1Low2[sector] * TMath::Power((Momentum(k) - kFidPar1Low3[sector]), 2));
+      return kFidPar1Low0[sector] +
+             kFidPar1Low1[sector] * Momentum(k) * TMath::Exp(kFidPar1Low2[sector] * TMath::Power((Momentum(k) - kFidPar1Low3[sector]), 2));
     } else if (side == 1 && param == 1) {
-      return kFidPar1High0[sector] + kFidPar1High1[sector] * Momentum(k) * TMath::Exp(kFidPar1High2[sector] * TMath::Power((Momentum(k) - kFidPar1High3[sector]), 2));
+      return kFidPar1High0[sector] + kFidPar1High1[sector] * Momentum(k) *
+                                         TMath::Exp(kFidPar1High2[sector] * TMath::Power((Momentum(k) - kFidPar1High3[sector]), 2));
     }            // closure
     return 0.0;  // default
   }
@@ -849,23 +859,28 @@ class TIdentificatorV2 {
 
   Double_t FidThetaMinPiPlus(Int_t k) {
     Int_t sector = Sector(k);
-    Double_t theta_min_val = kThetaPar0PiPlus[sector] + kThetaPar1PiPlus[sector] / TMath::Power(Momentum(k), 2) + kThetaPar2PiPlus[sector] * Momentum(k) +
-                             kThetaPar3PiPlus[sector] / Momentum(k) + kThetaPar4PiPlus[sector] * TMath::Exp(kThetaPar5PiPlus[sector] * Momentum(k));
+    Double_t theta_min_val = kThetaPar0PiPlus[sector] + kThetaPar1PiPlus[sector] / TMath::Power(Momentum(k), 2) +
+                             kThetaPar2PiPlus[sector] * Momentum(k) + kThetaPar3PiPlus[sector] / Momentum(k) +
+                             kThetaPar4PiPlus[sector] * TMath::Exp(kThetaPar5PiPlus[sector] * Momentum(k));
     return theta_min_val;
   }
 
   Double_t FidFuncPiPlus(Int_t k, Int_t side, Int_t param) {
     Int_t sector = Sector(k);
     if (side == 0 && param == 0) {
-      return kFidPar0Low0PiPlus[sector] + kFidPar0Low1PiPlus[sector] * TMath::Exp(kFidPar0Low2PiPlus[sector] * (Momentum(k) - kFidPar0Low3PiPlus[sector]));
+      return kFidPar0Low0PiPlus[sector] +
+             kFidPar0Low1PiPlus[sector] * TMath::Exp(kFidPar0Low2PiPlus[sector] * (Momentum(k) - kFidPar0Low3PiPlus[sector]));
     } else if (side == 1 && param == 0) {
-      return kFidPar0High0PiPlus[sector] + kFidPar0High1PiPlus[sector] * TMath::Exp(kFidPar0High2PiPlus[sector] * (Momentum(k) - kFidPar0High3PiPlus[sector]));
+      return kFidPar0High0PiPlus[sector] +
+             kFidPar0High1PiPlus[sector] * TMath::Exp(kFidPar0High2PiPlus[sector] * (Momentum(k) - kFidPar0High3PiPlus[sector]));
     } else if (side == 0 && param == 1) {
       return kFidPar1Low0PiPlus[sector] +
-             kFidPar1Low1PiPlus[sector] * Momentum(k) * TMath::Exp(kFidPar1Low2PiPlus[sector] * TMath::Power((Momentum(k) - kFidPar1Low3PiPlus[sector]), 2));
+             kFidPar1Low1PiPlus[sector] * Momentum(k) *
+                 TMath::Exp(kFidPar1Low2PiPlus[sector] * TMath::Power((Momentum(k) - kFidPar1Low3PiPlus[sector]), 2));
     } else if (side == 1 && param == 1) {
       return kFidPar1High0PiPlus[sector] +
-             kFidPar1High1PiPlus[sector] * Momentum(k) * TMath::Exp(kFidPar1High2PiPlus[sector] * TMath::Power((Momentum(k) - kFidPar1High3PiPlus[sector]), 2));
+             kFidPar1High1PiPlus[sector] * Momentum(k) *
+                 TMath::Exp(kFidPar1High2PiPlus[sector] * TMath::Power((Momentum(k) - kFidPar1High3PiPlus[sector]), 2));
     }  // closure
     return 0.0;
   }
@@ -898,24 +913,32 @@ class TIdentificatorV2 {
 
   Bool_t ElectronPhaseSpace(Int_t k, TString dataKind) {
     if (dataKind == "sim") {
-      if ((Etot(k) / 0.27 > (Sector(k) == 0 || Sector(k) == 1) * (1.03 * Momentum(k) - 0.42) + (Sector(k) == 2) * (1.05 * Momentum(k) - 0.46) +
-                                (Sector(k) == 3) * (1.03 * Momentum(k) - 0.44) + (Sector(k) == 4) * (1.06 * Momentum(k) - 0.46) + (Sector(k) == 5) * (1.04 * Momentum(k) - 0.47)) &&
-          (Etot(k) / 0.27 < (Sector(k) == 0 || Sector(k) == 1 || Sector(k) == 2) * (1.05 * Momentum(k) + 0.21) + (Sector(k) == 3) * (1.03 * Momentum(k) + 0.23) +
-                                (Sector(k) == 4) * (1.06 * Momentum(k) + 0.20) + (Sector(k) == 5) * (1.04 * Momentum(k) + 0.22)) &&
+      if ((Etot(k) / 0.27 > (Sector(k) == 0 || Sector(k) == 1) * (1.03 * Momentum(k) - 0.42) +
+                                (Sector(k) == 2) * (1.05 * Momentum(k) - 0.46) + (Sector(k) == 3) * (1.03 * Momentum(k) - 0.44) +
+                                (Sector(k) == 4) * (1.06 * Momentum(k) - 0.46) + (Sector(k) == 5) * (1.04 * Momentum(k) - 0.47)) &&
+          (Etot(k) / 0.27 < (Sector(k) == 0 || Sector(k) == 1 || Sector(k) == 2) * (1.05 * Momentum(k) + 0.21) +
+                                (Sector(k) == 3) * (1.03 * Momentum(k) + 0.23) + (Sector(k) == 4) * (1.06 * Momentum(k) + 0.20) +
+                                (Sector(k) == 5) * (1.04 * Momentum(k) + 0.22)) &&
           ((Ein(k) / 0.27 + Eout(k) / 0.27) < (Sector(k) == 0 || Sector(k) == 1) * (1.13 * Momentum(k)) +
-                                                  (Sector(k) == 2 || Sector(k) == 3 || Sector(k) == 5) * (1.14 * Momentum(k)) + (Sector(k) == 4) * (1.15 * Momentum(k))) &&
-          ((Ein(k) / 0.27 + Eout(k) / 0.27) > (Sector(k) == 0 || Sector(k) == 1) * (0.79 * Momentum(k)) + (Sector(k) == 2 || Sector(k) == 5) * (0.79 * Momentum(k)) +
+                                                  (Sector(k) == 2 || Sector(k) == 3 || Sector(k) == 5) * (1.14 * Momentum(k)) +
+                                                  (Sector(k) == 4) * (1.15 * Momentum(k))) &&
+          ((Ein(k) / 0.27 + Eout(k) / 0.27) > (Sector(k) == 0 || Sector(k) == 1) * (0.79 * Momentum(k)) +
+                                                  (Sector(k) == 2 || Sector(k) == 5) * (0.79 * Momentum(k)) +
                                                   (Sector(k) == 3) * (0.79 * Momentum(k)) + (Sector(k) == 4) * (0.79 * Momentum(k)))) {
         return true;
       }
     } else if (dataKind == "data") {
-      if ((Etot(k) / 0.27 > (Sector(k) == 0 || Sector(k) == 1) * (1.05 * Momentum(k) - 0.46) + (Sector(k) == 2 || Sector(k) == 4 || Sector(k) == 5) * (1.11 * Momentum(k) - 0.43) +
+      if ((Etot(k) / 0.27 > (Sector(k) == 0 || Sector(k) == 1) * (1.05 * Momentum(k) - 0.46) +
+                                (Sector(k) == 2 || Sector(k) == 4 || Sector(k) == 5) * (1.11 * Momentum(k) - 0.43) +
                                 (Sector(k) == 3) * (1.07 * Momentum(k) - 0.43)) &&
-          (Etot(k) / 0.27 < (Sector(k) == 0 || Sector(k) == 1) * (1.05 * Momentum(k) + 0.18) + (Sector(k) == 2 || Sector(k) == 4 || Sector(k) == 5) * (1.11 * Momentum(k) + 0.18) +
+          (Etot(k) / 0.27 < (Sector(k) == 0 || Sector(k) == 1) * (1.05 * Momentum(k) + 0.18) +
+                                (Sector(k) == 2 || Sector(k) == 4 || Sector(k) == 5) * (1.11 * Momentum(k) + 0.18) +
                                 (Sector(k) == 3) * (1.07 * Momentum(k) + 0.18)) &&
-          ((Ein(k) / 0.27 + Eout(k) / 0.27) < (Sector(k) == 0 || Sector(k) == 1) * (1.11 * Momentum(k)) + (Sector(k) == 2 || Sector(k) == 5) * (1.19 * Momentum(k)) +
+          ((Ein(k) / 0.27 + Eout(k) / 0.27) < (Sector(k) == 0 || Sector(k) == 1) * (1.11 * Momentum(k)) +
+                                                  (Sector(k) == 2 || Sector(k) == 5) * (1.19 * Momentum(k)) +
                                                   (Sector(k) == 3) * (1.15 * Momentum(k)) + (Sector(k) == 4) * (1.22 * Momentum(k))) &&
-          ((Ein(k) / 0.27 + Eout(k) / 0.27) > (Sector(k) == 0 || Sector(k) == 1) * (0.75 * Momentum(k)) + (Sector(k) == 2 || Sector(k) == 5) * (0.84 * Momentum(k)) +
+          ((Ein(k) / 0.27 + Eout(k) / 0.27) > (Sector(k) == 0 || Sector(k) == 1) * (0.75 * Momentum(k)) +
+                                                  (Sector(k) == 2 || Sector(k) == 5) * (0.84 * Momentum(k)) +
                                                   (Sector(k) == 3) * (0.83 * Momentum(k)) + (Sector(k) == 4) * (0.85 * Momentum(k)))) {
         return true;
       }
@@ -925,11 +948,14 @@ class TIdentificatorV2 {
 
   Bool_t IsElectron(Int_t k, TString dataKind, TString targetOption, TVector3 *ECuvw) {
     if (Status(k) > 0 &&  // Status(k) < 100 does nothing
-        NRowsDC() != 0 && DCStatus(k) > 0 && StatDC(k) > 0 && NRowsEC() != 0 && StatEC(k) > 0 && NRowsSC() != 0 && SCStatus(k) == 33 && NRowsCC() != 0 &&
-        Nphe(k) > (Sector(k) == 0 || Sector(k) == 1) * 25 + (Sector(k) == 2) * 26 + (Sector(k) == 3) * 21 + (Sector(k) == 4 || Sector(k) == 5) * 28 && Charge(k) == -1 &&
-        (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) < 5 * 0.35 && (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) > -5 * 0.35 && Eout(k) != 0 && Ein(k) > 0.06 &&
-        ECuvw->X() > 40 && ECuvw->X() < 410 && ECuvw->Y() < 370 && ECuvw->Z() < 405 && SampFracCheck(k, dataKind, targetOption) && ElectronPhaseSpace(k, dataKind) &&
-        FidCheckCut(k)) {
+        NRowsDC() != 0 && DCStatus(k) > 0 && StatDC(k) > 0 && NRowsEC() != 0 && StatEC(k) > 0 && NRowsSC() != 0 && SCStatus(k) == 33 &&
+        NRowsCC() != 0 &&
+        Nphe(k) > (Sector(k) == 0 || Sector(k) == 1) * 25 + (Sector(k) == 2) * 26 + (Sector(k) == 3) * 21 +
+                      (Sector(k) == 4 || Sector(k) == 5) * 28 &&
+        Charge(k) == -1 && (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) < 5 * 0.35 &&
+        (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) > -5 * 0.35 && Eout(k) != 0 && Ein(k) > 0.06 && ECuvw->X() > 40 &&
+        ECuvw->X() < 410 && ECuvw->Y() < 370 && ECuvw->Z() < 405 && SampFracCheck(k, dataKind, targetOption) &&
+        ElectronPhaseSpace(k, dataKind) && FidCheckCut(k)) {
       return true;
     }  // closure
     return false;
@@ -937,12 +963,15 @@ class TIdentificatorV2 {
 
   Bool_t IsPositron(Int_t k, TString dataKind, TString targetOption, TVector3 *ECuvw) {
     if (Status(k) > 0 &&  // Status(k) < 100 does nothing
-        NRowsDC() != 0 && DCStatus(k) > 0 && StatDC(k) > 0 && NRowsEC() != 0 && StatEC(k) > 0 && NRowsSC() != 0 && SCStatus(k) == 33 && NRowsCC() != 0 &&
-        Nphe(k) > (Sector(k) == 0 || Sector(k) == 1) * 25 + (Sector(k) == 2) * 26 + (Sector(k) == 3) * 21 + (Sector(k) == 4 || Sector(k) == 5) * 28 &&
+        NRowsDC() != 0 && DCStatus(k) > 0 && StatDC(k) > 0 && NRowsEC() != 0 && StatEC(k) > 0 && NRowsSC() != 0 && SCStatus(k) == 33 &&
+        NRowsCC() != 0 &&
+        Nphe(k) > (Sector(k) == 0 || Sector(k) == 1) * 25 + (Sector(k) == 2) * 26 + (Sector(k) == 3) * 21 +
+                      (Sector(k) == 4 || Sector(k) == 5) * 28 &&
         Charge(k) == 1 &&  // only difference
-        (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) < 5 * 0.35 && (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) > -5 * 0.35 && Eout(k) != 0 && Ein(k) > 0.06 &&
-        ECuvw->X() > 40 && ECuvw->X() < 410 && ECuvw->Y() < 370 && ECuvw->Z() < 405 && SampFracCheck(k, dataKind, targetOption) && ElectronPhaseSpace(k, dataKind) &&
-        FidCheckCut(k)) {
+        (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) < 5 * 0.35 &&
+        (TimeEC(k) - TimeSC(k) - (PathEC(k) - PathSC(k)) / 30) > -5 * 0.35 && Eout(k) != 0 && Ein(k) > 0.06 && ECuvw->X() > 40 &&
+        ECuvw->X() < 410 && ECuvw->Y() < 370 && ECuvw->Z() < 405 && SampFracCheck(k, dataKind, targetOption) &&
+        ElectronPhaseSpace(k, dataKind) && FidCheckCut(k)) {
       return true;
     }  // closure
     return false;
@@ -952,17 +981,24 @@ class TIdentificatorV2 {
     Double_t P = Momentum(k);
     Double_t T4 = TimeCorr4(k, 0.13957);
     // sebastian's paramaters
-    const Double_t lines_PiPlus[14][2] = {{-0.70, 0.70}, {-0.70, 0.65}, {-0.70, 0.65}, {-0.70, 0.65}, {-0.55, 0.55}, {-0.50, 0.55}, {-0.50, 0.40},
-                                          {-0.48, 0.40}, {-0.50, 0.40}, {-0.50, 0.40}, {-0.50, 0.40}, {-0.50, 0.40}, {-0.32, 0.32}, {-0.30, 0.37}};
+    const Double_t lines_PiPlus[14][2] = {{-0.70, 0.70}, {-0.70, 0.65}, {-0.70, 0.65}, {-0.70, 0.65}, {-0.55, 0.55},
+                                          {-0.50, 0.55}, {-0.50, 0.40}, {-0.48, 0.40}, {-0.50, 0.40}, {-0.50, 0.40},
+                                          {-0.50, 0.40}, {-0.50, 0.40}, {-0.32, 0.32}, {-0.30, 0.37}};
     if (P < 2.7 && NRowsSC() != 0 && StatSC(k) > 0 &&
-        ((P > 0.00 && P <= 0.25 && T4 >= lines_PiPlus[0][0] && T4 <= lines_PiPlus[0][1]) || (P > 0.25 && P <= 0.50 && T4 >= lines_PiPlus[1][0] && T4 <= lines_PiPlus[1][1]) ||
-         (P > 0.50 && P <= 0.75 && T4 >= lines_PiPlus[2][0] && T4 <= lines_PiPlus[2][1]) || (P > 0.75 && P <= 1.00 && T4 >= lines_PiPlus[3][0] && T4 <= lines_PiPlus[3][1]) ||
-         (P > 1.00 && P <= 1.25 && T4 >= lines_PiPlus[4][0] && T4 <= lines_PiPlus[4][1]) || (P > 1.25 && P <= 1.50 && T4 >= lines_PiPlus[5][0] && T4 <= lines_PiPlus[5][1]) ||
-         (P > 1.50 && P <= 1.75 && T4 >= lines_PiPlus[6][0] && T4 <= lines_PiPlus[6][1]) || (P > 1.75 && P <= 2.00 && T4 >= lines_PiPlus[7][0] && T4 <= lines_PiPlus[7][1]) ||
+        ((P > 0.00 && P <= 0.25 && T4 >= lines_PiPlus[0][0] && T4 <= lines_PiPlus[0][1]) ||
+         (P > 0.25 && P <= 0.50 && T4 >= lines_PiPlus[1][0] && T4 <= lines_PiPlus[1][1]) ||
+         (P > 0.50 && P <= 0.75 && T4 >= lines_PiPlus[2][0] && T4 <= lines_PiPlus[2][1]) ||
+         (P > 0.75 && P <= 1.00 && T4 >= lines_PiPlus[3][0] && T4 <= lines_PiPlus[3][1]) ||
+         (P > 1.00 && P <= 1.25 && T4 >= lines_PiPlus[4][0] && T4 <= lines_PiPlus[4][1]) ||
+         (P > 1.25 && P <= 1.50 && T4 >= lines_PiPlus[5][0] && T4 <= lines_PiPlus[5][1]) ||
+         (P > 1.50 && P <= 1.75 && T4 >= lines_PiPlus[6][0] && T4 <= lines_PiPlus[6][1]) ||
+         (P > 1.75 && P <= 2.00 && T4 >= lines_PiPlus[7][0] && T4 <= lines_PiPlus[7][1]) ||
          (P > 2.00 && P <= 2.25 && T4 >= lines_PiPlus[8][0] && T4 <= lines_PiPlus[8][1]) ||
          (P > 2.25 && P <= 2.50 && T4 >= lines_PiPlus[9][0] && T4 <= lines_PiPlus[9][1] && Mass2(k) < 0.5) ||
-         (P > 2.50 && P < 2.70 && T4 >= lines_PiPlus[10][0] && T4 <= lines_PiPlus[10][1] && Mass2(k) < 0.4) || (P > 2.7 && P <= 3.3 && T4 >= -0.5 && T4 <= 0.4 && Mass2(k) < 0.4) ||
-         (P > 3.3 && P <= 3.7 && T4 >= -0.32 && T4 <= 0.32 && Mass2(k) < 0.37) || (P > 3.7 && T4 >= -0.3 && T4 <= 0.3 && Mass2(k) < 0.37))) {
+         (P > 2.50 && P < 2.70 && T4 >= lines_PiPlus[10][0] && T4 <= lines_PiPlus[10][1] && Mass2(k) < 0.4) ||
+         (P > 2.7 && P <= 3.3 && T4 >= -0.5 && T4 <= 0.4 && Mass2(k) < 0.4) ||
+         (P > 3.3 && P <= 3.7 && T4 >= -0.32 && T4 <= 0.32 && Mass2(k) < 0.37) ||
+         (P > 3.7 && T4 >= -0.3 && T4 <= 0.3 && Mass2(k) < 0.37))) {
       return true;
     }  // closure
     return false;
@@ -979,7 +1015,8 @@ class TIdentificatorV2 {
   }
 
   Bool_t IsPiPlus(Int_t k, TVector3 *ECuvw) {
-    if (Charge(k) == 1 && Status(k) > 0 && NRowsDC() != 0 && StatDC(k) > 0 && DCStatus(k) > 0 && (PiPlusPhaseSpace_CC(k) || PiPlusPhaseSpace_SC(k))) {
+    if (Charge(k) == 1 && Status(k) > 0 && NRowsDC() != 0 && StatDC(k) > 0 && DCStatus(k) > 0 &&
+        (PiPlusPhaseSpace_CC(k) || PiPlusPhaseSpace_SC(k))) {
       return true;
     }  // closure
     return false;
@@ -990,10 +1027,11 @@ class TIdentificatorV2 {
     Double_t T4 = TimeCorr4(k, 0.13957);
     // sebastian's parameters
     const Double_t lines_PiMinus[5][2] = {{-0.75, 0.80}, {-0.55, 0.55}, {-0.55, 0.55}, {-0.50, 0.44}, {-0.50, 0.45}};
-    if (StatSC(k) > 0 &&
-        ((0 < P && P <= 0.5 && T4 >= lines_PiMinus[0][0] && T4 <= lines_PiMinus[0][1]) || (0.5 < P && P <= 1.0 && T4 >= lines_PiMinus[1][0] && T4 <= lines_PiMinus[1][1]) ||
-         (1.0 < P && P <= 1.5 && T4 >= lines_PiMinus[2][0] && T4 <= lines_PiMinus[2][1]) || (1.5 < P && P <= 2.0 && T4 >= lines_PiMinus[3][0] && T4 <= lines_PiMinus[3][1]) ||
-         (2.0 < P && P <= 2.5 && T4 >= lines_PiMinus[4][0] && T4 <= lines_PiMinus[4][1]))) {
+    if (StatSC(k) > 0 && ((0 < P && P <= 0.5 && T4 >= lines_PiMinus[0][0] && T4 <= lines_PiMinus[0][1]) ||
+                          (0.5 < P && P <= 1.0 && T4 >= lines_PiMinus[1][0] && T4 <= lines_PiMinus[1][1]) ||
+                          (1.0 < P && P <= 1.5 && T4 >= lines_PiMinus[2][0] && T4 <= lines_PiMinus[2][1]) ||
+                          (1.5 < P && P <= 2.0 && T4 >= lines_PiMinus[3][0] && T4 <= lines_PiMinus[3][1]) ||
+                          (2.0 < P && P <= 2.5 && T4 >= lines_PiMinus[4][0] && T4 <= lines_PiMinus[4][1]))) {
       return true;
     }  // closure
     return false;
@@ -1011,28 +1049,60 @@ class TIdentificatorV2 {
 
   Bool_t IsPiMinus(Int_t k, TVector3 *ECuvw) {
     Double_t deltaBetta = Betta(k) - (Momentum(k) / TMath::Sqrt(Momentum(k) * Momentum(k) + 0.13957 * 0.13957));
-    if (Charge(k) == -1 && Status(k) > 0 && NRowsDC() != 0 && DCStatus(k) > 0 && StatDC(k) > 0 && Etot(k) < 0.15 && (Ein(k) < 0.085 - 0.5 * Eout(k)) && deltaBetta >= -0.03 &&
-        deltaBetta <= 0.03 && Momentum(k) < 5.0 && (PiMinusPhaseSpace_SC(k) || PiMinusPhaseSpace_CC(k))) {  // high energy pi-
+    if (Charge(k) == -1 && Status(k) > 0 && NRowsDC() != 0 && DCStatus(k) > 0 && StatDC(k) > 0 && Etot(k) < 0.15 &&
+        (Ein(k) < 0.085 - 0.5 * Eout(k)) && deltaBetta >= -0.03 && deltaBetta <= 0.03 && Momentum(k) < 5.0 &&
+        (PiMinusPhaseSpace_SC(k) || PiMinusPhaseSpace_CC(k))) {  // high energy pi-
       return true;
     }  // closure
     return false;
   }
 
   Bool_t IsGamma(Int_t k, TVector3 *ECuvw) {
-    if (Charge(k) == 0 && ECuvw->X() > 40 && ECuvw->X() < 410 && ECuvw->Y() < 370 && ECuvw->Z() < 410 && ((PathEC(k) / (Betta(k) * 30) - PathEC(k) / 30) > -2.2) &&
-        ((PathEC(k) / (Betta(k) * 30) - PathEC(k) / 30) < 1.3) && TMath::Max(Etot(k), Ein(k) + Eout(k)) / 0.272 > 0.1) {
+    if (Charge(k) == 0 && ECuvw->X() > 40 && ECuvw->X() < 410 && ECuvw->Y() < 370 && ECuvw->Z() < 410 &&
+        ((PathEC(k) / (Betta(k) * 30) - PathEC(k) / 30) > -2.2) && ((PathEC(k) / (Betta(k) * 30) - PathEC(k) / 30) < 1.3) &&
+        TMath::Max(Etot(k), Ein(k) + Eout(k)) / 0.272 > 0.1) {
       return true;
     }  // closure
     return false;
   }
 
+  Bool_t CheckProtonsCorrectedTOF(k) {
+    Double_t T4 = TimeCorr4(k, 0.938272);
+    Double_t P = Momentum(k);
+    Double_t calc_upper_limit;
+    Double_t calc_lower_limit;
+    if (P >= 0.2 && P <= 0.8) {
+      // low momentum protons
+      calc_lower_limit = kLowP_lower_Proton[0] * TMath::Power(P, 0) + kLowP_lower_Proton[1] * TMath::Power(P, 1) +
+                         kLowP_lower_Proton[2] * TMath::Power(P, 2) + kLowP_lower_Proton[3] * TMath::Power(P, 3) +
+                         kLowP_lower_Proton[4] * TMath::Power(P, 4) + kLowP_lower_Proton[5] * TMath::Power(P, 5) +
+                         kLowP_lower_Proton[6] * TMath::Power(P, 6) + kLowP_lower_Proton[7] * TMath::Power(P, 7) +
+                         kLowP_lower_Proton[8] * TMath::Power(P, 8) + kLowP_lower_Proton[9] * TMath::Power(P, 9);
+      calc_upper_limit = kLowP_upper_Proton[0] * TMath::Power(P, 0) + kLowP_upper_Proton[1] * TMath::Power(P, 1) +
+                         kLowP_upper_Proton[2] * TMath::Power(P, 2) + kLowP_upper_Proton[3] * TMath::Power(P, 3) +
+                         kLowP_upper_Proton[4] * TMath::Power(P, 4) + kLowP_upper_Proton[5] * TMath::Power(P, 5) +
+                         kLowP_upper_Proton[6] * TMath::Power(P, 6) + kLowP_upper_Proton[7] * TMath::Power(P, 7) +
+                         kLowP_upper_Proton[8] * TMath::Power(P, 8) + kLowP_upper_Proton[9] * TMath::Power(P, 9);
+    } else if (P >= 0.8 && P <= 3.0) {
+      // high momentum protons
+      calc_lower_limit = kHighP_lower_Proton[0] * TMath::Power(P, 0) + kHighP_lower_Proton[1] * TMath::Power(P, 1) +
+                         kHighP_lower_Proton[2] * TMath::Power(P, 2) + kHighP_lower_Proton[3] * TMath::Power(P, 3);
+      calc_upper_limit = kHighP_upper_Proton[0] * TMath::Power(P, 0) + kHighP_upper_Proton[1] * TMath::Power(P, 1) +
+                         kHighP_upper_Proton[2] * TMath::Power(P, 2) + kHighP_upper_Proton[3] * TMath::Power(P, 3);
+    } else {
+      // invalid protons
+      calc_lower_limit = 0;
+      calc_upper_limit = 0;
+    }
+    // final condition
+    if (T4 >= calc_lower_limit && T4 <= calc_upper_limit) {
+      return true;
+    }
+    return false;
+  }
+
   Bool_t IsProton(Int_t k) {
-    Double_t deltaBetta = Betta(k) - (Momentum(k) / TMath::Sqrt(Momentum(k) * Momentum(k) + 0.938272 * 0.938272));
-    if (Charge(k) == 1 && Status(k) > 0 && StatDC(k) > 0 && DCStatus(k) > 0 && FidCheckCutPiPlus(k) // &&
-                                                                             // Momentum(k) > 0.5 &&
-                                                                             // deltaBetta < (-0.00218 + 3*0.01002) &&
-                                                                             // deltaBetta > (-0.00218 - 3*0.01002)
-    ) {
+    if (Charge(k) == 1 && Status(k) > 0 && StatDC(k) > 0 && DCStatus(k) > 0 && FidCheckCutPiPlus(k) && CheckProtonsCorrectedTOF(k)) {
       return true;
     }  // closure
     return false;
@@ -1086,34 +1156,41 @@ class TIdentificatorV2 {
   /*** Sampling Fraction Cuts ***/
 
   // for data
-  const Double_t kCPar[6][5] = {{0.252164, 0.0122263, -0.000793937, 9.55113e-03, 3.40672e-02}, {0.278574, 0.0187482, -0.00238217, 1.39889e-02, 3.74682e-02},
-                                {0.262079, 0.0230685, -0.00354741, 9.32762e-03, 2.90046e-02},  {0.251108, 0.0201568, -0.00332367, 8.21055e-03, 2.98893e-02},
-                                {0.263396, 0.00955238, -0.00102038, 2.25684e-02, 3.06508e-02}, {0.255245, 0.0232659, -0.00304798, 1.17254e-02, 3.64221e-02}};
+  const Double_t kCPar[6][5] = {
+      {0.252164, 0.0122263, -0.000793937, 9.55113e-03, 3.40672e-02}, {0.278574, 0.0187482, -0.00238217, 1.39889e-02, 3.74682e-02},
+      {0.262079, 0.0230685, -0.00354741, 9.32762e-03, 2.90046e-02},  {0.251108, 0.0201568, -0.00332367, 8.21055e-03, 2.98893e-02},
+      {0.263396, 0.00955238, -0.00102038, 2.25684e-02, 3.06508e-02}, {0.255245, 0.0232659, -0.00304798, 1.17254e-02, 3.64221e-02}};
 
-  const Double_t kFePar[6][5] = {{0.222404, 0.0222688, -0.0024153, 9.23027e-03, 2.98343e-02},  {0.234623, 0.0194985, -0.00208357, 8.66367e-03, 3.08858e-02},
-                                 {0.252287, 0.024248, -0.00338846, 1.07826e-02, 2.63854e-02},  {0.250946, 0.0208409, -0.00326824, 7.22581e-03, 2.98809e-02},
-                                 {0.271956, 0.0118487, -0.00187084, 1.84073e-02, 3.48029e-02}, {0.252613, 0.022819, -0.00311242, 4.11461e-03, 3.55081e-02}};
+  const Double_t kFePar[6][5] = {
+      {0.222404, 0.0222688, -0.0024153, 9.23027e-03, 2.98343e-02},  {0.234623, 0.0194985, -0.00208357, 8.66367e-03, 3.08858e-02},
+      {0.252287, 0.024248, -0.00338846, 1.07826e-02, 2.63854e-02},  {0.250946, 0.0208409, -0.00326824, 7.22581e-03, 2.98809e-02},
+      {0.271956, 0.0118487, -0.00187084, 1.84073e-02, 3.48029e-02}, {0.252613, 0.022819, -0.00311242, 4.11461e-03, 3.55081e-02}};
 
-  const Double_t kPbPar[6][5] = {{0.253431, 0.0138251, -0.00140160, 7.67408e-03, 3.54391e-02}, {0.249059, 0.0147784, -0.00148693, 7.52798e-03, 3.38371e-02},
-                                 {0.254573, 0.0225890, -0.00305686, 8.13241e-03, 2.77300e-02}, {0.255589, 0.0190419, -0.00305263, 7.20303e-03, 3.03627e-02},
-                                 {0.276739, 0.0111585, -0.00175784, 1.80841e-02, 3.53020e-02}, {0.262587, 0.0191659, -0.0026264, 1.99220e-03, 3.76172e-02}};
+  const Double_t kPbPar[6][5] = {
+      {0.253431, 0.0138251, -0.00140160, 7.67408e-03, 3.54391e-02}, {0.249059, 0.0147784, -0.00148693, 7.52798e-03, 3.38371e-02},
+      {0.254573, 0.0225890, -0.00305686, 8.13241e-03, 2.77300e-02}, {0.255589, 0.0190419, -0.00305263, 7.20303e-03, 3.03627e-02},
+      {0.276739, 0.0111585, -0.00175784, 1.80841e-02, 3.53020e-02}, {0.262587, 0.0191659, -0.0026264, 1.99220e-03, 3.76172e-02}};
 
   // for simulations
-  const Double_t kDPar_Sim[6][5] = {{0.24876, 0.0179894, -0.00442957, 0.00399225, 0.0249298},  {0.248957, 0.0181533, -0.00416637, 0.00538627, 0.0242045},
-                                    {0.248164, 0.0188304, -0.00427462, 0.00335732, 0.0247301}, {0.250525, 0.0161461, -0.0041662, 0.00346977, 0.0251755},
-                                    {0.248031, 0.0196832, -0.00456827, 0.00354094, 0.0252441}, {0.249069, 0.015629, -0.00363472, 0.00274538, 0.0254185}};
+  const Double_t kDPar_Sim[6][5] = {
+      {0.24876, 0.0179894, -0.00442957, 0.00399225, 0.0249298},  {0.248957, 0.0181533, -0.00416637, 0.00538627, 0.0242045},
+      {0.248164, 0.0188304, -0.00427462, 0.00335732, 0.0247301}, {0.250525, 0.0161461, -0.0041662, 0.00346977, 0.0251755},
+      {0.248031, 0.0196832, -0.00456827, 0.00354094, 0.0252441}, {0.249069, 0.015629, -0.00363472, 0.00274538, 0.0254185}};
 
-  const Double_t kCPar_Sim[6][5] = {{0.250469, 0.015964, -0.00389408, 0.00510237, 0.0248174}, {0.251445, 0.0159875, -0.00375825, 0.00431604, 0.0244632},
-                                    {0.250031, 0.0178331, -0.00422464, 8.4798e-08, 0.024983}, {0.25105, 0.0152426, -0.00390999, 0.00255027, 0.0254091},
-                                    {0.25027, 0.01694, -0.00381344, 0.00399372, 0.0249107},   {0.249087, 0.0150609, -0.0034316, 0.00552327, 0.0246847}};
+  const Double_t kCPar_Sim[6][5] = {
+      {0.250469, 0.015964, -0.00389408, 0.00510237, 0.0248174}, {0.251445, 0.0159875, -0.00375825, 0.00431604, 0.0244632},
+      {0.250031, 0.0178331, -0.00422464, 8.4798e-08, 0.024983}, {0.25105, 0.0152426, -0.00390999, 0.00255027, 0.0254091},
+      {0.25027, 0.01694, -0.00381344, 0.00399372, 0.0249107},   {0.249087, 0.0150609, -0.0034316, 0.00552327, 0.0246847}};
 
-  const Double_t kFePar_Sim[6][5] = {{0.249113, 0.0172746, -0.00420656, 0.00431529, 0.0251379}, {0.248658, 0.0185365, -0.00428943, 0.00540396, 0.0241749},
-                                     {0.249016, 0.0185937, -0.00438778, 0.00417432, 0.0249617}, {0.247588, 0.0196735, -0.00515405, 0.00431868, 0.0250086},
-                                     {0.247964, 0.0196745, -0.00455197, 0.0038769, 0.0251642},  {0.246463, 0.0184054, -0.00431434, 0.00444093, 0.025143}};
+  const Double_t kFePar_Sim[6][5] = {
+      {0.249113, 0.0172746, -0.00420656, 0.00431529, 0.0251379}, {0.248658, 0.0185365, -0.00428943, 0.00540396, 0.0241749},
+      {0.249016, 0.0185937, -0.00438778, 0.00417432, 0.0249617}, {0.247588, 0.0196735, -0.00515405, 0.00431868, 0.0250086},
+      {0.247964, 0.0196745, -0.00455197, 0.0038769, 0.0251642},  {0.246463, 0.0184054, -0.00431434, 0.00444093, 0.025143}};
 
-  const Double_t kPbPar_Sim[6][5] = {{0.247887, 0.0188033, -0.00463279, 0.00358101, 0.0253111}, {0.247159, 0.0206521, -0.00493913, 0.00417953, 0.0245174},
-                                     {0.247663, 0.0197017, -0.00459223, 1.8082e-07, 0.0253269}, {0.249099, 0.0173088, -0.00436998, 0.00339505, 0.0254005},
-                                     {0.249669, 0.0175364, -0.00392209, 0.00482576, 0.0250319}, {0.247958, 0.0165727, -0.00381158, 0.00332387, 0.0253196}};
+  const Double_t kPbPar_Sim[6][5] = {
+      {0.247887, 0.0188033, -0.00463279, 0.00358101, 0.0253111}, {0.247159, 0.0206521, -0.00493913, 0.00417953, 0.0245174},
+      {0.247663, 0.0197017, -0.00459223, 1.8082e-07, 0.0253269}, {0.249099, 0.0173088, -0.00436998, 0.00339505, 0.0254005},
+      {0.249669, 0.0175364, -0.00392209, 0.00482576, 0.0250319}, {0.247958, 0.0165727, -0.00381158, 0.00332387, 0.0253196}};
 
   /*** DC Fiducial Cuts ***/
 
@@ -1180,6 +1257,12 @@ class TIdentificatorV2 {
   const Double_t kFidPar1High1PiPlus[6] = {0.442034, 0.201149, 1.27519, 1.76076, 1.25399, 0.15892};
   const Double_t kFidPar1High2PiPlus[6] = {-2., -0.179631, -2., -1.89436, -2., -2.};
   const Double_t kFidPar1High3PiPlus[6] = {1.02806, 1.6, 0.5, 1.03961, 0.815707, 1.31013};
+
+  // Parameters from Or Hen for proton ID
+  const Double_t kLowP_lower_Proton[10] = {-26.8257, 153.155, -408.979, 673.476, -790.433, 708.255, -474.843, 217.295, -58.6269, 6.90981};
+  const Double_t kLowP_upper_Proton[10] = {120.251, -1168.19, 5237.42, -13638.1, 22325.3, -23649.6, 16177.8, -6894.16, 1663.4, -173.474};
+  const Double_t kHighP_lower_Proton[4] = {-1.1009, 0.719988, -0.280016, 0.0319352};
+  const Double_t kHighP_upper_Proton[4] = {1.59223, -1.49056, 0.676338, -0.104644};
 };
 
 #endif
