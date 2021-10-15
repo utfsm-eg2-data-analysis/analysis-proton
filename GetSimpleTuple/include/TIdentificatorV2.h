@@ -1066,7 +1066,7 @@ class TIdentificatorV2 {
     return false;
   }
 
-  Bool_t CheckProtonsCorrectedTOF(k) {
+  Bool_t CheckProtonsCorrectedTOF(Int_t k) {
     Double_t T4 = TimeCorr4(k, 0.938272);
     Double_t P = Momentum(k);
     Double_t calc_upper_limit;
