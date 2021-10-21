@@ -25,8 +25,8 @@ source ~/.bashrc
 # set main dirs
 GSTDIR=${HOME}/usm-data-analysis/analysis-proton/GetSimpleTuple            # dir of GetSimpleTuple
 DATADIR=/cache/mss/clas/eg2a/production/Pass2/Clas                         # dir where are located all the data files
-OUTDIR=/volatile/clas/claseg2/mikewood/out/GetSimpleTuple/data/${TARNAME}  # output dir
-TMPDIR=/volatile/clas/claseg2/mikewood/tmp/GetSimpleTuple/data/${TARNAME}  # temp dir to store logs and job scripts
+OUTDIR=/volatile/clas/claseg2/${USER}/out/GetSimpleTuple/data/${TARNAME}  # output dir
+TMPDIR=/volatile/clas/claseg2/${USER}/tmp/GetSimpleTuple/data/${TARNAME}  # temp dir to store logs and job scripts
 
 # create dirs just in case
 mkdir -p ${OUTDIR} ${TMPDIR}
@@ -72,5 +72,5 @@ for ((COUNTER=1; COUNTER <= ${TOTALRN}; COUNTER++)); do # ${nfiles} or 1
     echo "rm -v clas_${RN}*.root"                                     >> ${jobfile} # remove symbolic link of input files
     echo ""                                                           >> ${jobfile}
     echo "Submitting job: ${jobfile}"
-    # sbatch ${jobfile} # submit job!
+    sbatch ${jobfile} # submit job!
 done
